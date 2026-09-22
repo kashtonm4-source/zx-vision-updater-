@@ -1,6 +1,6 @@
-# ZX Vision
+# TRUE VISION
 
-ZX Vision is a dark, local-first remote-play control center prototype. It combines the product ideas behind console streaming clients, DualSense tooling, and XInput-style remapping in one focused workspace.
+TRUE VISION is a dark, local-first remote-play control center prototype. It combines the product ideas behind console streaming clients, DualSense tooling, and XInput-style remapping in one focused workspace.
 
 ## Included in this prototype
 
