@@ -1,17 +1,34 @@
-# ZX Vision Releases
+# ZX Vision
 
-This repository distributes compiled ZX Vision binaries and release metadata only.
+ZX Vision is a dark, local-first remote-play control center prototype. It combines the product ideas behind console streaming clients, DualSense tooling, and XInput-style remapping in one focused workspace.
 
-Application source code is not included. Download the latest release from the **Releases** page.
+## Included in this prototype
 
-System drivers such as ViGEmBus, HidHide, and capture-card manufacturer drivers are installed separately on Windows.
+- Remote Play dashboard with session-ready state, stream-quality controls, and connection metrics.
+- Controller Studio with a visual DualSense-style input preview, keyboard input readout, and editable Profile A mappings.
+- Auto Sync view showing local-first profile replication, paired devices, recent activity, and sync status.
+- Settings for launch behavior, accent color, network discovery, relay fallback, and reduced motion.
+- Responsive layout for desktop and smaller screens.
+- Local persistence through `localStorage` for controller mappings and interface preferences.
+- Keyboard shortcuts: `F1` opens Remote Play, `Esc` returns to Overview, and controller-like letter inputs update the input preview.
 
-## Recent update
+## Run locally
 
-The current port adds the renamed PySide6 display shell, centered live-display layout, capture-card and Remote Play source tabs, CPU/OpenCV meter processing, meter profiles, startup diagnostics, local logging, updater support, and read-only controller diagnostics.
+This is a dependency-free static prototype. From this directory, run any static server, for example:
 
-The port intentionally excludes anti-debugging, hardware fingerprint collection, telemetry, device hiding, virtual-controller creation, and automatic gameplay input injection.
+```bash
+python3 -m http.server 4173
+```
 
-## UI preview
+Then open <http://localhost:4173>.
 
-The latest complete page review is available as the `ZXVision_all_pages_latest.png` asset on the v0.0.1 release.
+## Product boundary
+
+The current build intentionally focuses on the interactive product shell and local state. It does not claim to implement a real PSN authentication flow, video codec pipeline, console pairing protocol, OS-level virtual-controller drivers, or gameplay input injection. Those capabilities belong in a native companion service with explicit platform permissions and security review; the browser prototype is ready to become its front end.
+
+## Files
+
+- `index.html` — application structure and views.
+- `styles.css` — responsive dark neon visual system.
+- `app.js` — navigation, local persistence, mock session behavior, and controller input interactions.
+- `ZXVision_all_pages_latest.png` — original visual reference supplied with the repository.
