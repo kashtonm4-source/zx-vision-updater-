@@ -1,20 +1,24 @@
 # TRUE VISION
 
-TRUE VISION is a dark, local-first remote-play control center prototype. It combines the product ideas behind console streaming clients, DualSense tooling, and XInput-style remapping in one focused workspace.
+TRUE VISION is a dark, local-first control center prototype that combines remote play, controller profiles, visual timing controls, and hardware diagnostics in one workspace.
 
-## Included in this prototype
+## Included workspace
 
-- Remote Play dashboard with session-ready state, stream-quality controls, and connection metrics.
-- Controller Studio with a visual DualSense-style input preview, keyboard input readout, and editable Profile A mappings.
-- Auto Sync view showing local-first profile replication, paired devices, recent activity, and sync status.
-- Settings for launch behavior, accent color, network discovery, relay fallback, and reduced motion.
-- Responsive layout for desktop and smaller screens.
-- Local persistence through `localStorage` for controller mappings and interface preferences.
-- Keyboard shortcuts: `F1` opens Remote Play, `Esc` returns to Overview, and controller-like letter inputs update the input preview.
+- **Overview** — session-ready Remote Play dashboard, system pulse, connected-device cards, and quick launch actions.
+- **Profiles** — five independent profile slots with active-profile switching and local persistence.
+- **Shot** — release timing, no-dip shots, dunk timing, meter smoothing, and tempo/timing controls.
+- **Stabilizer** — response smoothing, deadzone, adaptive correction, mode, and polling controls.
+- **Color / Meter** — meter visibility, color, appearance, and detection threshold in one place.
+- **Hardware Dashboard** — native bridge status, controller bridge, controller/capture/Titan status cards, scan action, and Computer Vision Results log.
+- **Remote Play** — preserved Remote Play session screen with quality, route, reconnect, and keyboard shortcut controls.
+- **Controllers** — visual DualSense-style preview, editable Profile A mappings, and live keyboard input readout.
+- **Auto Sync** — local-first profile replication state and recent activity.
+- **Visual Backgrounds** — Shooting Stars, Shooting TRUE VISION, TRUE VISION Galaxy, Neon TRUE VISION, and Dark Particles.
+- **Settings / About** — global preferences, build notes, roadmap, and the native-companion boundary.
 
 ## Run locally
 
-This is a dependency-free static prototype. From this directory, run any static server, for example:
+This is a dependency-free static prototype. From this directory, run:
 
 ```bash
 python3 -m http.server 4173
@@ -24,11 +28,17 @@ Then open <http://localhost:4173>.
 
 ## Product boundary
 
-The current build intentionally focuses on the interactive product shell and local state. It does not claim to implement a real PSN authentication flow, video codec pipeline, console pairing protocol, OS-level virtual-controller drivers, or gameplay input injection. Those capabilities belong in a native companion service with explicit platform permissions and security review; the browser prototype is ready to become its front end.
+The browser build intentionally reports device state honestly. It does not claim to detect Windows HID devices, capture cards, Titan hardware, PSN sessions, virtual-controller bridges, or real video streams. The Hardware Dashboard explicitly shows **NATIVE BRIDGE NOT CONNECTED** until a desktop companion is installed.
+
+The next production layer is a native companion service responsible for PS5/Xbox authentication and pairing, Remote Play streaming, controller polling, XInput/HID routing, capture-card or screen capture, continuous device monitoring, and Windows packaging. The browser UI is structured to become its front end without replacing the Remote Play workspace.
+
+## Local behavior
+
+Settings, mappings, active profile, and selected visual background persist through `localStorage`. Navigation, profile switching, reset actions, scan feedback, controller input readout, session controls, and results-log interactions are functional in the browser prototype.
 
 ## Files
 
-- `index.html` — application structure and views.
-- `styles.css` — responsive dark neon visual system.
-- `app.js` — navigation, local persistence, mock session behavior, and controller input interactions.
+- `index.html` — application structure and all views.
+- `styles.css` — responsive dark neon / hardened mission-console visual system.
+- `app.js` — navigation, local persistence, mock session behavior, profile controls, scan feedback, and controller interactions.
 - `ZXVision_all_pages_latest.png` — original visual reference supplied with the repository.

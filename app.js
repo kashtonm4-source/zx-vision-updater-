@@ -1,4 +1,4 @@
-const routes = ['overview', 'remote', 'controllers', 'sync', 'settings'];
+const routes = ['overview', 'profiles', 'shot', 'stabilizer', 'meter', 'dashboard', 'remote', 'controllers', 'sync', 'backgrounds', 'settings', 'about'];
 const navItems = document.querySelectorAll('.nav-item');
 const title = document.querySelector('#page-title');
 const pageTitles = { overview: 'Good evening, Alex', remote: 'Remote Play', controllers: 'Controller studio', sync: 'Auto Sync', settings: 'Settings' };
@@ -73,3 +73,32 @@ document.addEventListener('keydown', event => {
 });
 const hash = location.hash.replace('#', '');
 if (routes.includes(hash)) go(hash);
+
+
+const profiles = ['Competitive', 'Park / Casual', 'Remote Play', 'Practice Lab', 'Custom'];
+const profileGrid = document.querySelector('#profile-grid');
+if (profileGrid) {
+  const active = Number(localStorage.getItem('tv-profile') || 0);
+  profileGrid.innerHTML = profiles.map((name, i) => `<button class="profile-card ${i === active ? 'selected' : ''}" data-profile="${i}"><span class="profile-number">P${i + 1}</span><strong>${name}</strong><small>${i === active ? 'Active now' : 'Saved profile'}</small></button>`).join('');
+  profileGrid.addEventListener('click', event => {
+    const card = event.target.closest('[data-profile]'); if (!card) return;
+    const index = Number(card.dataset.profile); localStorage.setItem('tv-profile', index);
+    profileGrid.querySelectorAll('.profile-card').forEach(item => item.classList.toggle('selected', item === card));
+    const label = document.querySelector('#active-profile-name'); if (label) label.textContent = `Profile ${index + 1} · ${profiles[index]}`;
+    addLog(`Profile ${index + 1} loaded — ${profiles[index]}`); showToast('Profile loaded', `${profiles[index]} is now active.`);
+  });
+  document.querySelector('#active-profile-name').textContent = `Profile ${active + 1} · ${profiles[active]}`;
+}
+function addLog(message) {
+  const lines = document.querySelector('#log-lines'); if (!lines) return;
+  const row = document.createElement('div'); row.innerHTML = `<time>NOW</time><span class="log-dot"></span><p>${message}</p>`; lines.prepend(row);
+}
+document.querySelectorAll('[data-reset]').forEach(button => button.addEventListener('click', () => showToast('Defaults restored', `${button.dataset.reset} settings reset for the active profile.`)));
+document.querySelectorAll('.step-btn').forEach(button => button.addEventListener('click', () => {
+  const input = document.querySelector('#release-range'); const next = Math.max(0, Math.min(15, Number(input.value) + Number(button.dataset.delta))); input.value = next; document.querySelector('#release-value').textContent = `${next.toFixed(1)}%`; addLog(`Release Timing changed → ${next.toFixed(1)}%`);
+}));
+const releaseRange = document.querySelector('#release-range'); if (releaseRange) releaseRange.addEventListener('input', () => { document.querySelector('#release-value').textContent = `${Number(releaseRange.value).toFixed(1)}%`; });
+document.querySelectorAll('.background-card').forEach(card => card.addEventListener('click', () => { document.querySelectorAll('.background-card').forEach(item => item.classList.remove('selected')); card.classList.add('selected'); localStorage.setItem('tv-background', card.dataset.bg); showToast('Background applied', `${card.querySelector('strong').textContent} is active.`); }));
+document.querySelector('#scan-devices')?.addEventListener('click', event => { const button = event.currentTarget; button.disabled = true; button.innerHTML = 'SCANNING… <span>⌁</span>'; addLog('Device scan started — waiting for native bridge.'); setTimeout(() => { button.disabled = false; button.innerHTML = 'SCAN FOR DEVICES <span>⌁</span>'; addLog('Scan complete — no native bridge detected in browser preview.'); showToast('Scan complete', 'No native devices available in browser preview.'); }, 900); });
+document.querySelector('#bridge-help')?.addEventListener('click', () => showToast('Native bridge required', 'Install the desktop companion to enumerate hardware.'));
+document.querySelector('#clear-log')?.addEventListener('click', () => { const lines = document.querySelector('#log-lines'); if (lines) lines.innerHTML = ''; showToast('Log cleared', 'Computer vision results log is empty.'); });
