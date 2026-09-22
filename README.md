@@ -1,44 +1,8 @@
-# TRUE VISION
 
-TRUE VISION is a dark, local-first control center prototype that combines remote play, controller profiles, visual timing controls, and hardware diagnostics in one workspace.
+## Native desktop companion source
 
-## Included workspace
+The `desktop/` directory now contains a real multi-file PySide6 desktop companion source tree. It includes separate profile models, persistence, dense Shot/Stabilizer/Meter field groups, Remote Play service boundaries, diagnostic logging, device monitoring, ViGEmBus and HidHide adapters, a red/blue desktop theme, tests, a Windows launcher source, and a reproducible PyInstaller build script.
 
-- **Overview** — session-ready Remote Play dashboard, system pulse, connected-device cards, and quick launch actions.
-- **Profiles** — five independent profile slots with active-profile switching and local persistence.
-- **Shot** — release timing, no-dip shots, dunk timing, meter smoothing, and tempo/timing controls.
-- **Stabilizer** — response smoothing, deadzone, adaptive correction, mode, and polling controls.
-- **Color / Meter** — meter visibility, color, appearance, and detection threshold in one place.
-- **Hardware Dashboard** — native bridge status, controller bridge, controller/capture/Titan status cards, scan action, and Computer Vision Results log.
-- **Remote Play** — preserved Remote Play session screen with quality, route, reconnect, and keyboard shortcut controls.
-- **Controllers** — visual DualSense-style preview, editable Profile A mappings, and live keyboard input readout.
-- **Auto Sync** — local-first profile replication state and recent activity.
-- **Visual Backgrounds** — Shooting Stars, Shooting TRUE VISION, TRUE VISION Galaxy, Neon TRUE VISION, and Dark Particles.
-- **Settings / About** — global preferences, build notes, roadmap, and the native-companion boundary.
+The supplied Vanta archive was inspected as a compiled distribution only. It contained `Vanta.exe`, Qt/OpenCV/FFmpeg runtime files, and `ViGEmClient.dll`, but no Python or UI source. TRUE VISION therefore uses its own implementation and does not copy opaque binaries. The driver adapters report missing Windows drivers honestly and never claim a virtual controller is connected when it is not.
 
-## Run locally
-
-This is a dependency-free static prototype. From this directory, run:
-
-```bash
-python3 -m http.server 4173
-```
-
-Then open <http://localhost:4173>.
-
-## Product boundary
-
-The browser build intentionally reports device state honestly. It does not claim to detect Windows HID devices, capture cards, Titan hardware, PSN sessions, virtual-controller bridges, or real video streams. The Hardware Dashboard explicitly shows **NATIVE BRIDGE NOT CONNECTED** until a desktop companion is installed.
-
-The next production layer is a native companion service responsible for PS5/Xbox authentication and pairing, Remote Play streaming, controller polling, XInput/HID routing, capture-card or screen capture, continuous device monitoring, and Windows packaging. The browser UI is structured to become its front end without replacing the Remote Play workspace.
-
-## Local behavior
-
-Settings, mappings, active profile, and selected visual background persist through `localStorage`. Navigation, profile switching, reset actions, scan feedback, controller input readout, session controls, and results-log interactions are functional in the browser prototype.
-
-## Files
-
-- `index.html` — application structure and all views.
-- `styles.css` — responsive dark neon / hardened mission-console visual system.
-- `app.js` — navigation, local persistence, mock session behavior, profile controls, scan feedback, and controller interactions.
-- `ZXVision_all_pages_latest.png` — original visual reference supplied with the repository.
+On Windows, build the desktop executable with `desktop/build_windows.ps1`. The Linux sandbox cannot truthfully emit the final PyInstaller Windows executable because the Windows Python bootloader and Windows runtime APIs are required; the repository contains the source and reproducible build target for that `.exe`.

@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+desktop/.venv/
+desktop/build/
+desktop/dist/
+previews/
+.pytest_cache/
